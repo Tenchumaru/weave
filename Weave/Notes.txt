@@ -1,0 +1,16 @@
+﻿Add this XML to the Silverlight project file after the final import near the
+end of the file.
+
+  <PropertyGroup>
+    <XapPackagerDependsOn>
+      $(XapPackagerDependsOn);
+      Weave
+    </XapPackagerDependsOn>
+  </PropertyGroup>
+  <Target Name="Weave" Condition="Exists('\local\bin\weave.exe')">
+    <Copy SourceFiles="$(ProjectDir)$(OutputPath)$(TargetFileName)" DestinationFiles="$(ProjectDir)$(OutputPath)Original.$(TargetFileName)" />
+    <Copy SourceFiles="$(ProjectDir)$(OutputPath)$(AssemblyName).pdb" DestinationFiles="$(ProjectDir)$(OutputPath)Original.$(AssemblyName).pdb" />
+    <Exec Command="\local\bin\weave.exe %22$(ProjectDir)$(OutputPath)$(TargetFileName)%22" />
+    <Copy SourceFiles="$(ProjectDir)$(OutputPath)$(TargetFileName)" DestinationFiles="$(ProjectDir)$(IntermediateOutputPath)$(TargetFileName)" />
+    <Copy SourceFiles="$(ProjectDir)$(OutputPath)$(AssemblyName).pdb" DestinationFiles="$(ProjectDir)$(IntermediateOutputPath)$(AssemblyName).pdb" />
+  </Target>
