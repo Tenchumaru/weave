@@ -43,7 +43,7 @@ namespace Weave
                 postInvokeMethodName = arguments.PostInvokeMethod;
                 inputFilePath = arguments.FilePaths[0];
                 var outputFilePath = arguments.FilePaths.Count > 1 ? arguments.FilePaths[1] : inputFilePath;
-                resolver = (DefaultAssemblyResolver)GlobalAssemblyResolver.Instance;
+                resolver = new DefaultAssemblyResolver();
                 string inputFolderPath = Path.GetDirectoryName(inputFilePath);
                 resolver.RemoveSearchDirectory(".");
                 resolver.RemoveSearchDirectory("bin");
