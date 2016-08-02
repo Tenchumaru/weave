@@ -12,9 +12,8 @@ namespace Weave
 
 		public SymbolReader(ModuleDefinition module)
 		{
-			var field = module.GetType().GetField("SymbolReader", BindingFlags.Instance | BindingFlags.NonPublic);
-			var reader = field.GetValue(module);
-			field = reader.GetType().GetField("functions", BindingFlags.Instance | BindingFlags.NonPublic);
+			var reader = module.SymbolReader;
+			var field = reader.GetType().GetField("functions", BindingFlags.Instance | BindingFlags.NonPublic);
 			var functions = field.GetValue(reader);
 			var valuesProperty = functions.GetType().GetProperty("Values");
 			var values = valuesProperty.GetValue(functions, null);
@@ -24,10 +23,11 @@ namespace Weave
 			{
 				var function = enumerator.Current;
 				var functionType = function.GetType();
-				field = functionType.GetField("module", BindingFlags.Instance | BindingFlags.NonPublic);
-				var moduleName = (string)field.GetValue(function);
-				field = functionType.GetField("name", BindingFlags.Instance | BindingFlags.NonPublic);
-				var functionName = (string)field.GetValue(function);
+				var moduleName = module.Name;
+				field = functionType.GetField("token", BindingFlags.Instance | BindingFlags.NonPublic);
+				var token = (uint)field.GetValue(function);
+				var tokenInfo = (MethodDefinition)module.LookupToken((int)token);
+				var functionName = tokenInfo.Name;
 				field = functionType.GetField("lines", BindingFlags.Instance | BindingFlags.NonPublic);
 				var lines = (Array)field.GetValue(function);
 				var line = lines.Cast<object>().First();
