@@ -40,7 +40,7 @@ namespace Weave
 					var backingField = methodBody.Instructions.Count > 1 ? methodBody.Instructions[1].Operand as FieldDefinition : null;
 					CheckWarning(backingField != null,
 						"unexpected IL for " + property.Name + " getter", property);
-					var defaultValue = attribute.Properties.Where(a => a.Name == "DefaultValue").Select(a => a.Argument).FirstOrDefault();
+					var defaultValue = attribute.Properties.Where(a => a.Name == "DefaultValue").Select(a => a.Argument.Value).OfType<CustomAttributeArgument>().FirstOrDefault();
 					var instructionActions = ValidateDefaultValue(defaultValue, property).ToList();
 					string methodName = "On" + property.Name + "Changed";
 					var w = from m in type.Methods
