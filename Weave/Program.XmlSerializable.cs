@@ -47,7 +47,7 @@ namespace Weave
 							case "System.Uri":
 								var getter = new MethodDefinition("get_Weave$" + property.Name,
 									MethodAttributes.FamANDAssem | MethodAttributes.Family | MethodAttributes.HideBySig | MethodAttributes.SpecialName,
-									module.TypeSystem.String) { DeclaringType = type, IsGetter = true };
+									module.TypeSystem.String) { IsGetter = true, DeclaringType = type };
 								type.Methods.Add(getter);
 								var body = getter.Body;
 								body.InitLocals = true;
@@ -79,7 +79,7 @@ namespace Weave
 								processor.Append(processor.Create(OpCodes.Ret));
 								var setter = new MethodDefinition("set_Weave$" + property.Name,
 									MethodAttributes.FamANDAssem | MethodAttributes.Family | MethodAttributes.HideBySig | MethodAttributes.SpecialName,
-									module.TypeSystem.Void) { DeclaringType = type, IsSetter = true };
+									module.TypeSystem.Void) { IsSetter = true, DeclaringType = type };
 								setter.Parameters.Add(new ParameterDefinition("value", ParameterAttributes.None, module.TypeSystem.String));
 								type.Methods.Add(setter);
 								body = setter.Body;
